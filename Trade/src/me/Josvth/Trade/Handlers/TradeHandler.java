@@ -1,9 +1,10 @@
-package me.Josvth.Trade;
+package me.Josvth.Trade.Handlers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import me.Josvth.Trade.Trade;
 import me.Josvth.Trade.Inventories.TradeInventory;
 
 import org.bukkit.entity.Player;
