@@ -1,0 +1,9 @@
+gui:  
+  items:
+    accept: "35-5"
+    refuse: "35-14"
+    pending: "35-8"
+    seperator: "138"
+  default_rows: 4
+use_biggest: true
+request_timeout: 10 
