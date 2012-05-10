@@ -71,7 +71,7 @@ public class Trade extends JavaPlugin{
 					pendingRequests.remove(requested);
 				}
 			}
-		}, yamlHandler.config.getInt("request_timeout",10)*20);
+		}, yamlHandler.configYaml.getInt("request_timeout",10)*20);
 	}
 	
 	public void acceptRequest(Player requested, Player requestor){	
