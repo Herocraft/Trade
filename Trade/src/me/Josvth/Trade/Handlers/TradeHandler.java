@@ -5,7 +5,7 @@ import java.util.Arrays;
 import me.Josvth.Trade.Trade;
 import me.Josvth.Trade.Exeptions.PlayerNotFoundExeption;
 import me.Josvth.Trade.Handlers.LanguageHandler.Message;
-import me.Josvth.Trade.TradingInventories.StandardInventory;
+import me.Josvth.Trade.TradingInventories.DefaultInventory;
 import me.Josvth.Trade.TradingInventories.TradingInventory;
 
 import org.bukkit.entity.Player;
@@ -48,8 +48,8 @@ public class TradeHandler implements Runnable {
 			}
 		}
 		
-		p1inv = new StandardInventory(plugin, p2.getName(),	rows);
-		p2inv = new StandardInventory(plugin, p1.getName(), rows);
+		p1inv = new DefaultInventory(plugin, p2.getName(),	rows);
+		p2inv = new DefaultInventory(plugin, p1.getName(), rows);
 	}
 
 	public void acceptTrade(Player player) throws PlayerNotFoundExeption{
