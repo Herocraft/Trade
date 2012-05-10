@@ -70,6 +70,25 @@ public class TradeHandler implements Runnable {
 		getTradingInventory(player).deny();
 	}
 
+	public void refuse(Player player) throws PlayerNotFoundExeption{
+		if(player.equals(p1) || player.equals(p2)){
+			throw new PlayerNotFoundExeption();
+		}else{
+			plugin.languageHandler.sendMessage(player, Message.TRADE_REFUSE_SELF, "", "", "");
+			plugin.languageHandler.sendMessage(getOtherPlayer(player), Message.TRADE_REFUSE_OTHER, getOtherPlayer(player).getName(), "", "");
+		}
+	}
+	
+	public boolean hasAccepted(Player player) throws PlayerNotFoundExeption {
+		if(player.equals(p1)){
+			return p1acc;
+		}else if(player.equals(p2)){
+			return p2acc;
+		}else{
+			throw new PlayerNotFoundExeption();
+		}
+	}
+	
 	private Player getOtherPlayer(Player player) throws PlayerNotFoundExeption {
 		if(player.equals(p1)){
 			return p2;
@@ -80,7 +99,7 @@ public class TradeHandler implements Runnable {
 		}
 	}
 
-	private TradingInventory getTradingInventory(Player player) throws PlayerNotFoundExeption{
+	public TradingInventory getTradingInventory(Player player) throws PlayerNotFoundExeption{
 		if(player.equals(p1)){ 
 			return p1inv;
 		}else if(player.equals(p2)){
