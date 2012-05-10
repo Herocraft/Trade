@@ -56,21 +56,24 @@ public class InTradeListener implements Listener{
 
 			if(tradingInventory.isAcceptSlot(event.getRawSlot())){
 				if(tradeHandler.hasAccepted(player)){
-					tradeHandler.acceptTrade(player);
-				}else{
 					tradeHandler.denyTrade(player);
+				}else{
+					tradeHandler.acceptTrade(player);
 				}
 				event.setCancelled(true);
+				return;
 			}
 
 			if(tradingInventory.isRefuseSlot(event.getRawSlot())){
 				tradeHandler.refuse(player);
 				event.setCancelled(true);
+				return;
 			}
-
+			
 			if(!tradingInventory.canUseSlot(event.getRawSlot())){
 				plugin.languageHandler.sendMessage(player, Message.TRADE_CANNOT_USE_SLOT, "", "", "");
 				event.setCancelled(true);
+				return;
 			}
 					
 		} catch (PlayerNotFoundExeption e) {
