@@ -9,6 +9,7 @@ import me.Josvth.Trade.Handlers.LanguageHandler.Message;
 import me.Josvth.Trade.Handlers.CommandHandler;
 import me.Josvth.Trade.Handlers.TradeHandler;
 import me.Josvth.Trade.Handlers.YamlHandler;
+import me.Josvth.Trade.Listeners.InTradeListener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,7 +21,7 @@ public class Trade extends JavaPlugin{
 	// key = requester , value = requested
 	public HashMap<Player,Player> pendingRequests = new HashMap<Player, Player>();
 	
-	public HashMap<Player,Object> activeTrades = new HashMap<Player, Object>();
+	public HashMap<Player,TradeHandler> activeTrades = new HashMap<Player, TradeHandler>();
 
 	public ArrayList<Player> ignoring = new ArrayList<Player>();
 	
@@ -28,9 +29,18 @@ public class Trade extends JavaPlugin{
 	public LanguageHandler languageHandler;
 	CommandHandler commandHandler;
 	
+	InTradeListener inTradeListener;
+	
 	@Override
 	public void onEnable() {
 		logger = getLogger();
+		
+		yamlHandler = new YamlHandler(this);
+		languageHandler = new LanguageHandler(this);
+		commandHandler = new CommandHandler(this);
+		
+		inTradeListener = new InTradeListener(this);
+		
 	}
 	
 	public void requestPlayer(final Player requester, final Player requested){
@@ -73,11 +83,7 @@ public class Trade extends JavaPlugin{
 		languageHandler.sendMessage(requestor, Message.REQUEST_REFUSED, requested.getName(), "", "");
 		pendingRequests.remove(requestor);
 	}	
-	
-	public void cancelRequest(Player requester){
-		pendingRequests.remove(requester);
-	}
-	
+		
 	public void startTrading(Player player1, Player player2){
 		TradeHandler tradeHandler = new TradeHandler(this, player1, player2);
 		activeTrades.put(player1, tradeHandler);
