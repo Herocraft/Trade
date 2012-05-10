@@ -20,24 +20,26 @@ public class YamlHandler {
 		
 	public YamlHandler(Trade instance){
 		plugin = instance;
+		setupYamls();
+		loadYamls();
 	}
 	
 	public void setupYamls(){
 		configFile = new File(plugin.getDataFolder(), "config.yml");
 		if (!(configFile.exists())) plugin.saveResource("config.yml", false);
 		
-		languageFile = new File(plugin.getDataFolder(), "config.yml");
+		languageFile = new File(plugin.getDataFolder(), "language.yml");
 		if (!(languageFile.exists())) plugin.saveResource("language.yml", false);
 	}
 	
 	public void loadYamls(){
 		loadConfig();
-		loadMessages();
+		loadLanguage();
 	}
 	
 	public void saveYamls(){
 		saveConfig();
-		saveMessages();
+		saveLanguage();
 	}
 	
 	public void loadConfig() {
@@ -57,7 +59,7 @@ public class YamlHandler {
 		}
 	}
 	
-	public void loadMessages() {
+	public void loadLanguage() {
 		languageYaml = new YamlConfiguration();
 		try {
 			languageYaml.load(languageFile);
@@ -66,7 +68,7 @@ public class YamlHandler {
 		}
 	}
 	
-	public void saveMessages() {
+	public void saveLanguage() {
 		try {
 			languageYaml.save(languageFile);
 		} catch (IOException e) {
