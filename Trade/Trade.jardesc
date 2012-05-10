@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
 <jardesc>
-    <jar path="E:/Bukkit Test Server/plugins/Trade-0.1.jar"/>
+    <jar path="E:/Bukkit Test Server/plugins/Trade-0.2.jar"/>
     <options buildIfNeeded="true" compress="true" descriptionLocation="/Trade/Trade.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
@@ -11,9 +11,11 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/Trade/messages.yml"/>
         <javaElement handleIdentifier="=Trade/src"/>
         <file path="/Trade/.project"/>
-        <file path="/Trade/plugin.yml"/>
+        <file path="/Trade/config.yml"/>
         <file path="/Trade/.classpath"/>
+        <file path="/Trade/plugin.yml"/>
     </selectedElements>
 </jardesc>

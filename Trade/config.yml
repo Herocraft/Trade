@@ -5,5 +5,8 @@ gui:
     pending: "35-8"
     seperator: "138"
   default_rows: 4
+right_click: true
+shift_right_click: false
 use_biggest: true
+cross_world: false
 request_timeout: 10 

@@ -6,6 +6,7 @@ request:
   please_wait: "Please wait until &other_player accepts your request!"
   in_trade: "$other_player is already in trade!"
   no_permission: "You don't have the permission to trade!"
+  no_crossworld: "You cannot trade across world!"
 trade:
   start: "You are trading with &other_player!"
   help: "Click the &accept_item to accept the trade. Click the &refuse_item to refuse the trade."
