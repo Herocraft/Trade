@@ -26,4 +26,8 @@ public interface TradingInventory extends InventoryHolder{
 	public boolean isRefuseSlot(int slot);
 
 	public boolean canUseSlot(int slot);
+
+	public void acceptOther();
+
+	public void denyOther();
 }
