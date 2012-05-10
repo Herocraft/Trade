@@ -18,11 +18,11 @@ public class Trade extends JavaPlugin{
 	Logger logger;
 	
 	// key = requester , value = requested
-	HashMap<Player,Player> pendingRequests = new HashMap<Player, Player>();
+	public HashMap<Player,Player> pendingRequests = new HashMap<Player, Player>();
 	
 	public HashMap<Player,Object> activeTrades = new HashMap<Player, Object>();
 
-	ArrayList<Player> ignoring = new ArrayList<Player>();
+	public ArrayList<Player> ignoring = new ArrayList<Player>();
 	
 	public YamlHandler yamlHandler;
 	public LanguageHandler languageHandler;
@@ -56,11 +56,23 @@ public class Trade extends JavaPlugin{
 		getServer().getScheduler().scheduleAsyncDelayedTask(this, new Runnable() {
 			@Override
 			public void run() {
-				languageHandler.sendMessage(requester, Message.REQUEST_NO_RESPONSE, requested.getName(), "", "");
-				pendingRequests.remove(requested);
+				if(pendingRequests.containsKey(requested)){
+					languageHandler.sendMessage(requester, Message.REQUEST_NO_RESPONSE, requested.getName(), "", "");
+					pendingRequests.remove(requested);
+				}
 			}
 		}, yamlHandler.config.getInt("request_timeout",10)*20);
 	}
+	
+	public void acceptRequest(Player requested, Player requestor){	
+		startTrading(requested, requestor);
+		pendingRequests.remove(requestor);
+	}
+	
+	public void refuseRequest(Player requested, Player requestor){
+		languageHandler.sendMessage(requestor, Message.REQUEST_REFUSED, requested.getName(), "", "");
+		pendingRequests.remove(requestor);
+	}	
 	
 	public void cancelRequest(Player requester){
 		pendingRequests.remove(requester);
