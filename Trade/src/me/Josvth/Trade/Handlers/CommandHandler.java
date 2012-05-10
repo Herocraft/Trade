@@ -41,6 +41,13 @@ public class CommandHandler implements CommandExecutor {
 				return true;
 			}
 			
+			// /trade reload
+			if(args[0].equalsIgnoreCase("reload") && sender.hasPermission("trade.reload")){
+				plugin.yamlHandler.loadYamls();
+				sender.sendMessage("Yamls reloaded!");
+				return true;
+			}
+			
 			// /trade <player>
 			if(!(sender instanceof Player)){ 
 				sender.sendMessage("You must be a player to use this command!");
@@ -54,6 +61,7 @@ public class CommandHandler implements CommandExecutor {
 				plugin.requestPlayer(player, requested);
 			}
 			
+			return true;
 		}
 		
 		if(args.length == 2){
@@ -69,7 +77,7 @@ public class CommandHandler implements CommandExecutor {
 				if(requester == null){
 					plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_FOUND, args[1], "", "");
 				}else if(plugin.pendingRequests.containsKey(requester)){
-					plugin.acceptRequest(requester, player);
+					plugin.acceptRequest(player, requester);
 				}else{
 					plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_REQUESTED, requester.getName(), "", "");
 				}
