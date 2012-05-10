@@ -1,12 +1,7 @@
-gui:  
-  items:
-    accept: "35-5"
-    refuse: "35-14"
-    pending: "35-8"
-    seperator: "138"
-  default_rows: 4
 right_click: true
 shift_right_click: false
 use_biggest: true
 cross_world: false
+cross_gamemode: false
+must_see: true
 request_timeout: 10 

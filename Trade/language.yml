@@ -1,21 +1,32 @@
 request:
-  other: "&other_player wants to trade with you!"
-  self: "You requested &other_player to trade!"
+  new:
+    self: "You requested &other_player to trade!"
+    other: "&other_player request you to trade!"
+  in_trade: "&other_player is in trade!"
+  ignoring:
+    is_ignoring: "&other_player is ignoring all incoming requests!"
+    enable: "You are now ignoring all incoming requests!"
+    disable: "You are now listening to all incoming request!"
+  please_wait: "Please wait until &other_player accepts your trade request!"
+  no_permission: "You don't have the permission to send a trade request!"
   no_response: "&other_player didn't respond to your trade request!"
-  ignoring: "&other_player is ignoring all incomming requests!"
-  please_wait: "Please wait until &other_player accepts your request!"
-  in_trade: "$other_player is already in trade!"
-  no_permission: "You don't have the permission to trade!"
-  no_crossworld: "You cannot trade across world!"
+  no_cross_world: "You cannot trade with players in other worlds!"
+  no_cross_gamemode: "You cannot trade with player that are in other gamemodes!"
+  must_see: "You have to see the other player to be able to trade!"
+  refused: "&other_player refused your trade request!"
+  player_not_requested: "Nobody requested you to trade. Use /trade <player> to request someone."
+  player_not_found: "Player is not found."
 trade:
   start: "You are trading with &other_player!"
   help: "Click the &accept_item to accept the trade. Click the &refuse_item to refuse the trade."
-  accept: "You accepted."
-  accept_other: "&other_player accepted the trade!" 
-  deaccept: You deaccepted. 
-  deaccept_other: "&other_player deaccepted the trade!"
+  accept:
+    self: "You accepted the trade!"
+    other: "&other_player accepted the trade!"
+  deny:
+    self: "You denied the trade!"
+    other: "&other_player denied the trade!"
+  refuse:
+    self: "You refused the trade."
+    other: "&other_player refused the trade!"
   offer_changed: "&other_player changed their offer."
-  refuse: "You refused the trade."
-  refuse_other: "&other_player refused the trade!"
-  abandon: "You abandoned the trade!"
-  abandon_other: "&other_player abandoned the trade!"
+  cannot_use_slot: "You cannot use this slot. Use the left side!"
