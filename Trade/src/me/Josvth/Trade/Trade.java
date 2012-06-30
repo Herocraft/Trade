@@ -13,7 +13,11 @@ import me.Josvth.Trade.Listeners.InTradeListener;
 import me.Josvth.Trade.Listeners.RequestListener;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.garbagemule.MobArena.MobArena;
+import com.garbagemule.MobArena.MobArenaHandler;
 
 public class Trade extends JavaPlugin{
 
@@ -26,6 +30,7 @@ public class Trade extends JavaPlugin{
 
 	public ArrayList<Player> ignoring = new ArrayList<Player>();
 	
+	public MobArenaHandler mobArenaHandler;
 	public YamlHandler yamlHandler;
 	public LanguageHandler languageHandler;
 	CommandHandler commandHandler;
@@ -36,6 +41,8 @@ public class Trade extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		logger = getLogger();
+		
+		mobArenaHandler = getMobArenaHandler(this);
 		
 		yamlHandler = new YamlHandler(this);
 		languageHandler = new LanguageHandler(this);
@@ -107,5 +114,14 @@ public class Trade extends JavaPlugin{
 		tradeHandler.startTrading();
 	}
 
+    private MobArenaHandler getMobArenaHandler(Plugin plugin) {
+        MobArenaHandler mobArenaHandler = null;
 
+        if (plugin != null && plugin instanceof MobArena) {
+            mobArenaHandler = new MobArenaHandler();
+            logger.info("Successfully hooked " + plugin.getDescription().getName());
+        }
+
+        return mobArenaHandler;
+    }
 }

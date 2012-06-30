@@ -24,6 +24,13 @@ public class RequestListener implements Listener {
 		Player requester = event.getPlayer();
 		Player requested = (Player)event.getRightClicked();
 		
+		if (plugin.yamlHandler.configYaml.contains("right_click_item")
+		        && plugin.yamlHandler.configYaml.getInt("right_click_item") != requester.getItemInHand().getTypeId()) return;
+
+		if (!plugin.yamlHandler.configYaml.getBoolean("mob_arena_trade",true)) {
+		    if (plugin.mobArenaHandler.isPlayerInArena(requester.getName())) return;
+		}
+
 		if(requester.isSneaking()){
 			if(!plugin.yamlHandler.configYaml.getBoolean("shift_right_click",false)) return;
 		}else{
