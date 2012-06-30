@@ -4,6 +4,7 @@ cross_gamemode: false
 must_see: true
 request_timeout: 10
 mob_arena_trade: false
+heroes_combat_trade: false
 right_click_item: 0
 default-rows: 4
 economy:

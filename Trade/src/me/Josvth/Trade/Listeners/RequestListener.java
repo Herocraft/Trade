@@ -35,7 +35,12 @@ public class RequestListener
             if (plugin.mobArenaHandler != null && plugin.mobArenaHandler.isPlayerInArena(requester.getName()))
                 return;
         }
-       
+
+        if (!plugin.yamlHandler.configYaml.getBoolean("heroes_combat_trade", true)) {
+            if (plugin.heroesPlugin != null && plugin.heroesPlugin.getCharacterManager().getHero(requester).isInCombat())
+                return;
+        }
+
     if (plugin.pendingRequests.containsKey(requested)) {
       if (((!requester.isSneaking()) || (!requester.hasPermission("trade.accept-request.shift-right-click"))) && (!requester.hasPermission("trade.accept-request.right-click"))) {
         plugin.getLanguageHandler().sendMessage(requester, "command.no-permission");

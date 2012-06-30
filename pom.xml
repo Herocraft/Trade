@@ -35,6 +35,13 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/MobArena.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>com.herocraftonline.heroes</groupId>
+			<artifactId>Heroes</artifactId>
+			<version>1.4.7-b1383</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/Heroes.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

@@ -24,6 +24,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.garbagemule.MobArena.MobArena;
 import com.garbagemule.MobArena.MobArenaHandler;
+import com.herocraftonline.heroes.Heroes;
 
 public class Trade extends JavaPlugin
 {
@@ -35,6 +36,7 @@ public class Trade extends JavaPlugin
   public ArrayList<Player> ignoring = new ArrayList();
   public Economy economyHandler;
   public MobArenaHandler mobArenaHandler;
+  public Heroes heroesPlugin;
   public YamlHandler yamlHandler;
   LanguageHandler languageHandler;
   CommandHandler commandHandler;
@@ -45,7 +47,8 @@ public class Trade extends JavaPlugin
   {
     logger = getLogger();
 
-    mobArenaHandler = getMobArenaHandler(this);
+    mobArenaHandler = getMobArenaHandler(this.getServer().getPluginManager().getPlugin("MobArena"));
+    heroesPlugin = getHeroesPlugin(this.getServer().getPluginManager().getPlugin("Heroes"));
     yamlHandler = new YamlHandler(this);
     languageHandler = new LanguageHandler(this);
     commandHandler = new CommandHandler(this);
@@ -136,12 +139,21 @@ public class Trade extends JavaPlugin
     tradeHandler.startTrading();
   }
 
-    private MobArenaHandler getMobArenaHandler(Plugin plugin){
+    private MobArenaHandler getMobArenaHandler(Plugin plugin) {
         MobArenaHandler mobArenaHandler = null;
         if (plugin != null && plugin instanceof MobArena) {
             mobArenaHandler = new MobArenaHandler();
             logger.info("Successfully hooked " + plugin.getDescription().getName());
         }
         return mobArenaHandler;
+    }
+
+    private Heroes getHeroesPlugin(Plugin plugin) {
+        Heroes heroesPlugin = null;
+        if (plugin != null && plugin instanceof Heroes) {
+            heroesPlugin = (Heroes) plugin;
+            logger.info("Successfully hooked " + plugin.getDescription().getName());
+        }
+        return heroesPlugin;
     }
 }
