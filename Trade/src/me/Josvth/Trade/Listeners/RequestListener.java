@@ -28,7 +28,7 @@ public class RequestListener implements Listener {
 		        && plugin.yamlHandler.configYaml.getInt("right_click_item") != requester.getItemInHand().getTypeId()) return;
 
 		if (!plugin.yamlHandler.configYaml.getBoolean("mob_arena_trade",true)) {
-		    if (plugin.mobArenaHandler.isPlayerInArena(requester.getName())) return;
+		    if (plugin.mobArenaHandler != null && plugin.mobArenaHandler.isPlayerInArena(requester.getName())) return;
 		}
 
 		if(requester.isSneaking()){
