@@ -1,80 +1,100 @@
 package me.Josvth.Trade.Handlers;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
+import java.io.File;
 import me.Josvth.Trade.Trade;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
-public class LanguageHandler {
+public class LanguageHandler
+{
+  Trade plugin;
+  File languageFile;
+  FileConfiguration languageYaml;
 
-	Trade plugin;
+  public LanguageHandler(Trade instance)
+  {
+    plugin = instance;
+    setupLanguageFile();
+    loadLanguageYaml();
+  }
 
-	public enum Message{
-		
-		TRADE_START ("trade.start"),
-		TRADE_HELP ("trade.help"),
-		
-		TRADE_ACCEPT_SELF ("trade.accept.self"),
-		TRADE_ACCEPT_OTHER ("trade.accept.other"), 
-		
-		TRADE_DENY_SELF ("trade.deny.self"),
-		TRADE_DENY_OTHER ("trade.deny.other"),
-		
-		TRADE_REFUSE_OTHER ("trade.refuse.other"),
-		TRADE_REFUSE_SELF ("trade.refuse.self"),
-		
-		TRADE_OFFER_CHANGED ("trade.offer_changed"),
-				
-		TRADE_CANNOT_USE_SLOT ("trade.cannot_use_slot"),
-		
-		
-		REQUEST_NEW_SELF ("request.new.self"),
-		REQUEST_NEW_OTHER ("request.new.other"),
-		
-		REQUEST_REFUSED ("request.refused"),
-		
-		REQUEST_IN_TRADE ("request.in_trade"), 
-		
-		REQUEST_IGNORING ("request.ignoring.is_ignoring"),
-		REQUEST_IGNORING_ENABLE ("request.ignoring.enabled"),
-		REQUEST_IGNORING_DISABLE ("request.ignoring.disabled"),
-		
-		REQUEST_PLEASE_WAIT ("request.please_wait"), 
-		
-		REQUEST_NO_PERMISSION ("request.no_permission"), 
-		REQUEST_NO_CROSS_WORLD ("request.no_cross_world"),
-		REQUEST_NO_CROSS_GAMEMODE ("request.no_cross_gamemode"),
-		REQUEST_MUST_SEE ("request.must_see"),
-		
-		REQUEST_NO_RESPONSE ("request.no_response"),
-				
-		REQUEST_PLAYER_NOT_REQUESTED ("request.player_not_requested"),
-		
-		REQUEST_PLAYER_NOT_FOUND ("request.player_not_found"); 
-		
+  private void setupLanguageFile() {
+    languageFile = new File(plugin.getDataFolder(), "language.yml");
+    if (!languageFile.exists()) plugin.saveResource("language.yml", false); 
+  }
 
-		public final String path;
+  private void loadLanguageYaml()
+  {
+    languageYaml = new YamlConfiguration();
+    try {
+      languageYaml.load(languageFile);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-		Message(String yamlPath){
-			path = yamlPath;
-		}
-	}
+  public void sendMessage(CommandSender reciever, String path) {
+    String message = languageYaml.getString(path);
+    if (message == null) return;
+    message = ChatColor.translateAlternateColorCodes('&', message);
+    reciever.sendMessage(message);
+  }
 
-	public LanguageHandler(Trade instance){
-		plugin = instance;
-	}
+  public void sendMessage(CommandSender reciever, Message message) {
+    sendMessage(reciever, message.path, message.args);
+  }
 
-	public void sendMessage(Player player, Message message, String playerName, String acceptItemName, String refuseItemName) {
-		String string = plugin.yamlHandler.languageYaml.getString(message.path);
-		if(string != null){
-			string = string.replaceAll("&other_player", playerName);
-			string = string.replaceAll("&accept_item", acceptItemName);
-			string = string.replaceAll("&refuse_item", refuseItemName);
-			player.sendMessage(formatColorCodes(string));
-		}
-	}
+  public void sendMessage(CommandSender reciever, String path, MessageArgument argument) {
+    String message = languageYaml.getString(path);
+    if (message == null) return;
+    message = ChatColor.translateAlternateColorCodes('&', message);
+    message = message.replaceAll(argument.variable, argument.value);
+    reciever.sendMessage(message);
+  }
 
-	public static final String formatColorCodes(String string){
-		return ChatColor.translateAlternateColorCodes('&', string);
-	}
+  public void sendMessage(CommandSender reciever, String path, MessageArgument[] args) {
+    String message = languageYaml.getString(path);
+    if (message == null) return;
+    message = ChatColor.translateAlternateColorCodes('&', message);
+    for (MessageArgument argument : args) {
+      message = message.replaceAll(argument.variable, argument.value);
+    }
+    reciever.sendMessage(message);
+  }
+
+  public static class Message
+  {
+    public final String path;
+    public final LanguageHandler.MessageArgument[] args;
+
+    public Message(String path)
+    {
+      this.path = path;
+      args = new LanguageHandler.MessageArgument[0];
+    }
+
+    public Message(String path, LanguageHandler.MessageArgument[] args) {
+      this.path = path;
+      this.args = args;
+    }
+
+    public Message(String path, LanguageHandler.MessageArgument arg) {
+      this.path = path;
+      args = new LanguageHandler.MessageArgument[] { arg };
+    }
+  }
+
+  public static class MessageArgument
+  {
+    public final String variable;
+    public final String value;
+
+    public MessageArgument(String variable, String value)
+    {
+      this.variable = variable;
+      this.value = value;
+    }
+  }
 }

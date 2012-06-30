@@ -1,108 +1,142 @@
 package me.Josvth.Trade.Handlers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import me.Josvth.Trade.Trade;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 
-import me.Josvth.Trade.Trade;
-import me.Josvth.Trade.Handlers.LanguageHandler.Message;
+public class CommandHandler
+  implements CommandExecutor
+{
+  Trade plugin;
+  LanguageHandler languageHandler;
 
-public class CommandHandler implements CommandExecutor {
-	
-	Trade plugin;
-	
-	public CommandHandler(Trade instance){
-		plugin = instance;
-		plugin.getCommand("trade").setExecutor(this);
-	}
+  public CommandHandler(Trade instance)
+  {
+    plugin = instance;
+    languageHandler = plugin.getLanguageHandler();
+    plugin.getCommand("trade").setExecutor(this);
+  }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command arg1, String label, String[] args) {
-		
-		if(args.length == 0) return false;
-		
-		if(args.length == 1){
-			
-			// /trade ignore
-			if(args[0].equalsIgnoreCase("ignore")){
-				if(!(sender instanceof Player)){ 
-					sender.sendMessage("You must be a player to use this command!");
-					return true;
-				}
-				Player player = (Player)sender;
-				if(plugin.ignoring.contains(player)){
-					plugin.ignoring.remove(player);
-					plugin.languageHandler.sendMessage(player, Message.REQUEST_IGNORING_DISABLE, "", "", "");
-				}else{
-					plugin.ignoring.add(player);
-					plugin.languageHandler.sendMessage(player, Message.REQUEST_IGNORING_ENABLE, "", "", "");
-				}
-				return true;
-			}
-			
-			// /trade reload
-			if(args[0].equalsIgnoreCase("reload") && sender.hasPermission("trade.reload")){
-				plugin.yamlHandler.loadYamls();
-				sender.sendMessage("Yamls reloaded!");
-				return true;
-			}
-			
-			// /trade <player>
-			if(!(sender instanceof Player)){ 
-				sender.sendMessage("You must be a player to use this command!");
-				return true;
-			}
-			Player player = (Player)sender;
-			Player requested = plugin.getServer().getPlayer(args[0]);
-			if(requested == null){
-				plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_FOUND, args[0], "", "");
-			}else{
-				plugin.requestPlayer(player, requested);
-			}
-			
-			return true;
-		}
-		
-		if(args.length == 2){
-			
-			// /trade accept <player>
-			if (args[0].equalsIgnoreCase("accept")){
-				if(!(sender instanceof Player)){ 
-					sender.sendMessage("You must be a player to use this command!");
-					return true;
-				}
-				Player player = (Player)sender;
-				Player requester = plugin.getServer().getPlayer(args[1]);
-				if(requester == null){
-					plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_FOUND, args[1], "", "");
-				}else if(plugin.pendingRequests.containsKey(requester)){
-					plugin.acceptRequest(player, requester);
-				}else{
-					plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_REQUESTED, requester.getName(), "", "");
-				}
-				return true;
-			}
-			
-			// /trade refuse <player>
-			if (args[0].equalsIgnoreCase("refuse")){
-				if(!(sender instanceof Player)){ 
-					sender.sendMessage("You must be a player to use this command!");
-					return true;
-				}
-				Player player = (Player)sender;
-				Player requester = plugin.getServer().getPlayer(args[1]);
-				if(requester == null){
-					plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_FOUND, args[1], "", "");
-				}else if(plugin.pendingRequests.containsKey(requester)){
-					plugin.refuseRequest(requester, player);
-				}else{
-					plugin.languageHandler.sendMessage(player, Message.REQUEST_PLAYER_NOT_REQUESTED, requester.getName(), "", "");
-				}
-				return true;
-			}
-		}
-		
-		return false;
-	}
+  public boolean onCommand(CommandSender sender, Command arg1, String label, String[] args)
+  {
+    if (args.length == 0) return false;
+
+    if (args.length == 1)
+    {
+      if (args[0].equalsIgnoreCase("ignore"))
+      {
+        if (!sender.hasPermission("trade.ignore")) {
+          languageHandler.sendMessage(sender, "command.no-permission");
+          return true;
+        }
+
+        if (!(sender instanceof Player)) {
+          languageHandler.sendMessage(sender, "command.only-player");
+          return true;
+        }
+
+        Player player = (Player)sender;
+
+        if (plugin.ignoring.contains(player)) {
+          plugin.ignoring.remove(player);
+          languageHandler.sendMessage(player, "request.ignoring.disabled");
+        } else {
+          plugin.ignoring.add(player);
+          languageHandler.sendMessage(player, "request.ignoring.enabled");
+        }
+        return true;
+      }
+
+      if (args[0].equalsIgnoreCase("reload")) {
+        if (!sender.hasPermission("trade.reload")) {
+          languageHandler.sendMessage(sender, "command.no-permission");
+        } else {
+          plugin.yamlHandler.loadYamls();
+          languageHandler.sendMessage(sender, "global.reload");
+        }
+        return true;
+      }
+
+      if (!(sender instanceof Player)) {
+        languageHandler.sendMessage(sender, "command.only-player");
+        return true;
+      }
+
+      if (!sender.hasPermission("trade.request.command")) {
+        languageHandler.sendMessage(sender, "command.no-permission");
+        return true;
+      }
+
+      Player player = (Player)sender;
+      Player requested = plugin.getServer().getPlayer(args[0]);
+      if (requested == null)
+        languageHandler.sendMessage(player, "request.player-not-found", new LanguageHandler.MessageArgument("%playername%", args[0]));
+      else {
+        plugin.requestPlayer(player, requested);
+      }
+
+      return true;
+    }
+
+    if (args.length == 2)
+    {
+      if (args[0].equalsIgnoreCase("accept"))
+      {
+        if (!(sender instanceof Player)) {
+          languageHandler.sendMessage(sender, "command.only-player");
+          return true;
+        }
+
+        if (!sender.hasPermission("trade.accept-request.command")) {
+          languageHandler.sendMessage(sender, "command.no-permission");
+          return true;
+        }
+
+        Player player = (Player)sender;
+        Player requester = plugin.getServer().getPlayer(args[1]);
+
+        if (requester == null)
+          languageHandler.sendMessage(player, "request.player-not-found", new LanguageHandler.MessageArgument("%playername%", args[0]));
+        else if (plugin.pendingRequests.containsKey(requester))
+          plugin.acceptRequest(player, requester);
+        else {
+          languageHandler.sendMessage(player, "request.player-not-requested");
+        }
+
+        return true;
+      }
+
+      if (args[0].equalsIgnoreCase("refuse"))
+      {
+        if (!(sender instanceof Player)) {
+          languageHandler.sendMessage(sender, "command.only-player");
+          return true;
+        }
+
+        if (!sender.hasPermission("trade.refuse-request.command")) {
+          languageHandler.sendMessage(sender, "command.no-permission");
+          return true;
+        }
+
+        Player player = (Player)sender;
+        Player requester = plugin.getServer().getPlayer(args[1]);
+        if (requester == null)
+          languageHandler.sendMessage(player, "request.player-not-found", new LanguageHandler.MessageArgument("%player-not-found%", args[1]));
+        else if (plugin.pendingRequests.containsKey(requester))
+          plugin.refuseRequest(requester, player);
+        else {
+          languageHandler.sendMessage(player, "request.player-not-requested");
+        }
+        return true;
+      }
+    }
+
+    return false;
+  }
 }

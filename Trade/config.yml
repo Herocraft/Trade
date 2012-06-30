@@ -1,9 +1,24 @@
-right_click: true
-shift_right_click: false
 use_biggest: true
 cross_world: false
 cross_gamemode: false
 must_see: true
-request_timeout: 10 
+request_timeout: 10
 mob_arena_trade: false
 right_click_item: 0
+default-rows: 4
+economy:
+  enabled: false
+  values:
+    small: 1
+    medium: 10
+    large: 50
+  items:
+    small:
+      type: 371
+      amount: 1
+    medium:
+      type: 266
+      amount: 10
+    large:
+      type: 41
+      amount: 50

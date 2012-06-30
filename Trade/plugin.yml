@@ -1,8 +1,74 @@
 name: Trade
-version: 0.1
+version: 0.4.1b
 main: me.Josvth.Trade.Trade
 author: Josvth
+softdepend: [Vault]
 commands:
   trade:
-    description: The main command.
+    description: The main trade command.
     usage: Command not found!
+permissions:
+  trade.ignore:
+    description: Allows you to ignore incomming requests.
+    default: true
+  
+  trade.request:
+    description: Allows you to request other players.
+    default: true
+    children:
+      trade.request.command: true
+      trade.request.right-click: true
+  trade.request.command:
+    description: Allows you to request with the /trade <playername> command.
+    default: true
+    children:
+      trade.request.command.accept: true
+      trade.request.command.refuse: true
+  trade.request.right-click:
+    description: Allows you to request players using shift right clicking.
+    default: true
+    children:
+      trade.request.shift-right-click: true
+  trade.request.shift-right-click:
+    description: Allows you to request players using shift right clicking.
+    default: true
+    
+  trade.accept-request:
+    description: Allows you to accept requests.
+    default: true
+    children:
+      trade.accept-request.command: true
+      trade..accept-request.right-click: true      
+  trade.accept-request.command:
+    description: Allows you to use the /trade accept command.
+    default: true
+  trade.accept-request.right-click:
+    description: Allows you to accept a request with right clicking the player.
+    default: true
+  trade.accept-request.shift-right-click:
+    description: Allows you to accept a request with shift right clicking the player.
+    default: true
+    
+  trade.refuse-request.command:
+    description: Allows you to use the /trade refuse command.
+    default: true    
+
+
+  trade.gui.rows.6:
+    description: Allows you to use a gui of 6 rows.
+    default: false
+  trade.gui.rows.5:
+    description: Allows you to use a gui of 5 rows.
+    default: false
+  trade.gui.rows.4:
+    description: Allows you to use a gui of 4 rows.
+    default: true
+  trade.gui.rows.3:
+    description: Allows you to use a gui of 3 rows.
+    default: false
+  trade.gui.rows.2:
+    description: Allows you to use a gui of 2 rows.
+    default: false  
+  trade.reload:
+    description: Allows you to use the /trade reload command.
+    default: op
