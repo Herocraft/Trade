@@ -6,6 +6,7 @@ request_timeout: 10
 mob_arena_trade: false
 heroes_combat_trade: false
 right_click_item: 0
+shift_right_click: false
 default-rows: 4
 economy:
   enabled: false

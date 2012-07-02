@@ -31,6 +31,9 @@ public class RequestListener
         if (plugin.yamlHandler.configYaml.contains("right_click_item") && plugin.yamlHandler.configYaml.getInt("right_click_item") != requester.getItemInHand().getTypeId())
             return;
 
+        if (plugin.yamlHandler.configYaml.getBoolean("shift_right_click", false) && !requester.isSneaking())
+            return;
+
         if (!plugin.yamlHandler.configYaml.getBoolean("mob_arena_trade", true)) {
             if (plugin.mobArenaHandler != null && plugin.mobArenaHandler.isPlayerInArena(requester.getName()))
                 return;
