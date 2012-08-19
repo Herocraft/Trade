@@ -11,6 +11,7 @@ import me.Josvth.Trade.Handlers.TradeHandler;
 import me.Josvth.Trade.Handlers.YamlHandler;
 import me.Josvth.Trade.Listeners.InTradeListener;
 import me.Josvth.Trade.Listeners.RequestListener;
+import net.citizensnpcs.Citizens;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.GameMode;
 import org.bukkit.Server;
@@ -37,6 +38,7 @@ public class Trade extends JavaPlugin
   public Economy economyHandler;
   public MobArenaHandler mobArenaHandler;
   public Heroes heroesPlugin;
+  public Plugin cititzensPlugin;
   public YamlHandler yamlHandler;
   LanguageHandler languageHandler;
   CommandHandler commandHandler;
@@ -49,6 +51,7 @@ public class Trade extends JavaPlugin
 
     mobArenaHandler = getMobArenaHandler(this.getServer().getPluginManager().getPlugin("MobArena"));
     heroesPlugin = getHeroesPlugin(this.getServer().getPluginManager().getPlugin("Heroes"));
+    cititzensPlugin = getCitizensPlugin(this.getServer().getPluginManager().getPlugin("Citizens"));
     yamlHandler = new YamlHandler(this);
     languageHandler = new LanguageHandler(this);
     commandHandler = new CommandHandler(this);
@@ -155,5 +158,14 @@ public class Trade extends JavaPlugin
             logger.info("Successfully hooked " + plugin.getDescription().getName());
         }
         return heroesPlugin;
+    }
+    
+    private Citizens getCitizensPlugin(Plugin plugin) {
+        Citizens citizensPlugin = null;
+        if (plugin != null && plugin instanceof Citizens) {
+            citizensPlugin = (Citizens) plugin;
+            logger.info("Successfully hooked " + plugin.getDescription().getName());
+        }
+        return citizensPlugin;
     }
 }

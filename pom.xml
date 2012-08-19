@@ -42,6 +42,13 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/lib/Heroes.jar</systemPath>
 		</dependency>
+        <dependency>
+            <groupId>net.citizensnpcs.Citizens</groupId>
+            <artifactId>Citizens</artifactId>
+            <version>1.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/Citizens.jar</systemPath>
+        </dependency>
 	</dependencies>
 	<build>
 		<resources>

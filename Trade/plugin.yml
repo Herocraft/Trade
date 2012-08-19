@@ -2,7 +2,7 @@ name: Trade
 version: 0.4.1b
 main: me.Josvth.Trade.Trade
 author: Josvth
-softdepend: [Vault]
+softdepend: [Vault,Citizens]
 commands:
   trade:
     description: The main trade command.

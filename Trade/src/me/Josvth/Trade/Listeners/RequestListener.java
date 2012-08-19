@@ -3,6 +3,8 @@ package me.Josvth.Trade.Listeners;
 import java.util.HashMap;
 import me.Josvth.Trade.Handlers.LanguageHandler;
 import me.Josvth.Trade.Trade;
+import net.citizensnpcs.api.CitizensManager;
+import net.citizensnpcs.npctypes.CitizensNPC;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +27,8 @@ public class RequestListener
   public void onRightClickPlayer(PlayerInteractEntityEvent event) {
     if (!(event.getRightClicked() instanceof Player)) return;
 
+    if (plugin.cititzensPlugin != null && CitizensManager.isNPC(event.getRightClicked())) return;
+    
     Player requester = event.getPlayer();
     Player requested = (Player)event.getRightClicked();
 
