@@ -3,9 +3,10 @@ package me.Josvth.Trade.Listeners;
 import java.util.HashMap;
 import me.Josvth.Trade.Handlers.LanguageHandler;
 import me.Josvth.Trade.Trade;
+import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.CitizensManager;
-import net.citizensnpcs.npctypes.CitizensNPC;
 import org.bukkit.Server;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,10 +26,8 @@ public class RequestListener
 
   @EventHandler
   public void onRightClickPlayer(PlayerInteractEntityEvent event) {
-    if (!(event.getRightClicked() instanceof Player)) return;
+    if (!isValidPlayer(event.getRightClicked())) return;
 
-    if (plugin.cititzensPlugin != null && CitizensManager.isNPC(event.getRightClicked())) return;
-    
     Player requester = event.getPlayer();
     Player requested = (Player)event.getRightClicked();
 
@@ -59,4 +58,25 @@ public class RequestListener
       plugin.requestPlayer(requester, requested);
     }
   }
+
+    private boolean isValidPlayer(Entity entity) {
+        boolean isValidPlayer = false;
+        
+        if (entity instanceof Player) {
+            boolean isNPC = false;
+            
+            if (plugin.cititzensPlugin != null) {
+                try {
+                    isNPC = Double.parseDouble(plugin.cititzensPlugin.getDescription().getVersion()) < 2.0 ?
+                            CitizensManager.isNPC(entity) : CitizensAPI.getNPCRegistry().isNPC(entity);
+                } catch (NumberFormatException e) {
+                    // move along, nothing to see here :)
+                }
+            }
+            
+            isValidPlayer = isNPC ? false : true;
+        }
+        
+        return isValidPlayer;
+    }
 }
