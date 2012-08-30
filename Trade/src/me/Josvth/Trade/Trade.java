@@ -160,10 +160,10 @@ public class Trade extends JavaPlugin
         return heroesPlugin;
     }
     
-    private Citizens getCitizensPlugin(Plugin plugin) {
-        Citizens citizensPlugin = null;
+    private Plugin getCitizensPlugin(Plugin plugin) {
+        Plugin citizensPlugin = null;
         if (plugin != null && plugin instanceof Citizens) {
-            citizensPlugin = (Citizens) plugin;
+            citizensPlugin = plugin;
             logger.info("Successfully hooked " + plugin.getDescription().getName());
         }
         return citizensPlugin;
