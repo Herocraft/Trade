@@ -67,8 +67,8 @@ public class RequestListener
             
             if (plugin.cititzensPlugin != null) {
                 try {
-                    isNPC = Double.parseDouble(plugin.cititzensPlugin.getDescription().getVersion()) < 2.0 ?
-                            CitizensManager.isNPC(entity) : CitizensAPI.getNPCRegistry().isNPC(entity);
+                    isNPC = plugin.cititzensPlugin.getDescription().getVersion().startsWith("2") ?
+                            CitizensAPI.getNPCRegistry().isNPC(entity) : CitizensManager.isNPC(entity);
                 } catch (NumberFormatException e) {
                     // move along, nothing to see here :)
                 }
